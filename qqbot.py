@@ -119,7 +119,6 @@ def OnGroupMsgs(message):
     2. #Closeit: 关闭店招
     3. #ShowMode: 显示模式
     4. #SetMode: 设置模式
-    5. #ShowStatus: 显示当前状况
     '''
 
     modemenu = '''
@@ -129,6 +128,9 @@ def OnGroupMsgs(message):
     &A=(0 to 255)    -- master brightness
     &T=(0,1,or 2)    -- master off/on/toggle
     &FX=(0 to 101)   -- LED Effect Index
+    
+    范例:
+    输入#SetMode &T=2 可以切换店招开关状态
     '''
 
     if (str(a.FromQQG) == targetQQ):
@@ -137,23 +139,21 @@ def OnGroupMsgs(message):
             return
         elif str(a.Content) == '#Openit':
             send(a.FromQQG, "店招已开启", 2, a.FromQQ)
-            # mqttTest.run("T=1")
+            mqttTest.run("T=1")
             return
         elif str(a.Content) == '#Closeit':
             send(a.FromQQG, "店招已关闭", 2, a.FromQQ)
-            # mqttTest.run("T=0")
+            mqttTest.run("T=0")
             return
         elif str(a.Content).find('#SetMode') != -1:
             op = str(a.Content).replace('#SetMode', '', 1)
-            #mqtt
+            mqttTest.run(op.strip())
             send(a.FromQQG, "模式已设置", 2, a.FromQQ)
             return
         elif str(a.Content) == '#ShowMode':
             send(a.FromQQG, modemenu, 2, a.FromQQ)
             return
-        elif str(a.Content) == '#ShowStatus':
-            send(a.FromQQG, "此功能未完成", 2, a.FromQQ)
-            return
+
 
 
 @sio.on('OnFriendMsgs')
